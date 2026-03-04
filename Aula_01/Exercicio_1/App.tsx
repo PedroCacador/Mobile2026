@@ -1,8 +1,6 @@
 import { Text, SafeAreaView, StyleSheet,TextInput,Button,Alert } from 'react-native';
 import { Card } from 'react-native-paper';
 import React, { useState } from 'react';
-import AssetExample from './components/AssetExample';
-
 
 export default function App() {
 
