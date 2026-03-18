@@ -1,10 +1,18 @@
 import React from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, StyleSheet, TouchableOpacity,Alert } from 'react-native';
+import { Modal } from 'react-native-paper'
 import { useViewModelLista } from '../viewmodels/useViewModelLista';
 import { Item } from '../modelos/Item';
 
 export default function VisaoLista() {
-  const { itens, textoEntrada, setTextoEntrada, mensagemErro, lidarComAdicionarItem } = useViewModelLista();
+  const {
+    itens,
+    textoEntrada,
+    setTextoEntrada,
+    mensagemErro,
+    lidarComAdicionarItem,
+    lidarComRemoverItem
+  } = useViewModelLista();
 
   return (
     <View style={estilos.recipiente}>
@@ -17,17 +25,23 @@ export default function VisaoLista() {
           value={textoEntrada}
           onChangeText={setTextoEntrada}
         />
-        <Button title="Adicionar" onPress={lidarComAdicionarItem} color="#007bff" />
+        <View style={estilos.botaoAdicionar}>
+          <TouchableOpacity style={estilos.adicionar}onPress={lidarComAdicionarItem}>
+            <Text style={{color: 'white'}}>Adicionar</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
       {mensagemErro ? <Text style={estilos.erro}>{mensagemErro}</Text> : null}
 
       <FlatList
         data={itens}
-        keyExtractor={(item: Item) => item.id}
+        keyExtractor={(item: Item) => item.id.toString()}
         renderItem={({ item }: { item: Item }) => (
           <View style={estilos.cartaoItem}>
             <Text style={estilos.textoItem}>{item.nome}</Text>
+            <TouchableOpacity style={estilos.adicionar}onPress={() => lidarComRemoverItem(item.id)}>
+            <Text style={{color: 'white'}}>REMOVER</Text>
+          </TouchableOpacity>
           </View>
         )}
         style={estilos.lista}
@@ -41,7 +55,7 @@ const estilos = StyleSheet.create({
   recipiente: {
     flex: 1,
     padding: 24,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#232323',
     paddingTop: 60,
   },
   titulo: {
@@ -49,7 +63,7 @@ const estilos = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
-    color: '#333'
+    color: '#fff',
   },
   recipienteEntrada: {
     flexDirection: 'row',
@@ -65,6 +79,9 @@ const estilos = StyleSheet.create({
     borderRadius: 6,
     fontSize: 16,
   },
+  botaoAdicionar: {
+    justifyContent: 'center',
+  },
   erro: {
     color: 'red',
     marginBottom: 16,
@@ -75,19 +92,24 @@ const estilos = StyleSheet.create({
     marginTop: 8,
   },
   cartaoItem: {
-    backgroundColor: '#fff',
+    backgroundColor: '#2c2c2c',
     padding: 16,
     borderRadius: 6,
     borderLeftWidth: 4,
-    borderLeftColor: '#007bff',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 2,
+    borderLeftColor: '#f0007a',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     elevation: 2,
   },
   textoItem: {
     fontSize: 16,
-    color: '#333',
+    color: 'white',
   },
+  adicionar: {
+    backgroundColor: '#f0007a',
+    padding: 13,
+    borderRadius: 2
+  }
+  
 });

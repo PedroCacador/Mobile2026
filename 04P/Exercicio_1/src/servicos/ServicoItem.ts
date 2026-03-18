@@ -6,6 +6,10 @@ export class ServicoItem {
   constructor() {
     this.itens = []; 
   }
+
+  removerItem(id: string): void {
+    this.itens = this.itens.filter(item => item.id !== id);
+  }
  
   adicionarItem(nome: string): Item {
     if (!nome || nome.trim().length <= 2) {

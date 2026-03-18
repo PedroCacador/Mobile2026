@@ -27,12 +27,18 @@ export function useViewModelLista() {
       }
     }
   };
-
+  const lidarComRemoverItem = (id: string) => {
+    instanciaServicoItem.removerItem(id);
+    setItens(instanciaServicoItem.obterItens());
+  }
   return {
     itens,
     textoEntrada,
     setTextoEntrada,
     mensagemErro,
-    lidarComAdicionarItem
+    lidarComAdicionarItem,
+    lidarComRemoverItem
   };
 }
+
+
