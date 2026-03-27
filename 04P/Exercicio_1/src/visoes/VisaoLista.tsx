@@ -1,37 +1,25 @@
 import React from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet, TouchableOpacity,Alert } from 'react-native';
-import { Modal } from 'react-native-paper'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useViewModelLista } from '../viewmodels/useViewModelLista';
 import { Item } from '../modelos/Item';
+import { useNavigation } from '@react-navigation/native';
 
 export default function VisaoLista() {
-  const {
-    itens,
-    textoEntrada,
-    setTextoEntrada,
-    mensagemErro,
-    lidarComAdicionarItem,
-    lidarComRemoverItem
-  } = useViewModelLista();
+  const { itens, lidarComRemoverItem } = useViewModelLista();
+  const navigation = useNavigation();
 
   return (
     <View style={estilos.recipiente}>
       <Text style={estilos.titulo}>Minha Lista</Text>
 
-      <View style={estilos.recipienteEntrada}>
-        <TextInput
-          style={estilos.entrada}
-          placeholder="Digite um produto, pet, etc."
-          value={textoEntrada}
-          onChangeText={setTextoEntrada}
-        />
-        <View style={estilos.botaoAdicionar}>
-          <TouchableOpacity style={estilos.adicionar}onPress={lidarComAdicionarItem}>
-            <Text style={{color: 'white'}}>Adicionar</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      {mensagemErro ? <Text style={estilos.erro}>{mensagemErro}</Text> : null}
+      <TouchableOpacity
+        style={[estilos.adicionar, { marginBottom: 16 }]}
+        onPress={() => navigation.navigate('Adicionar')}
+      >
+        <Text style={{ color: 'white', textAlign: 'center' }}>
+          Ir para Adicionar
+        </Text>
+      </TouchableOpacity>
 
       <FlatList
         data={itens}
@@ -39,9 +27,13 @@ export default function VisaoLista() {
         renderItem={({ item }: { item: Item }) => (
           <View style={estilos.cartaoItem}>
             <Text style={estilos.textoItem}>{item.nome}</Text>
-            <TouchableOpacity style={estilos.adicionar}onPress={() => lidarComRemoverItem(item.id)}>
-            <Text style={{color: 'white'}}>REMOVER</Text>
-          </TouchableOpacity>
+
+            <TouchableOpacity
+              style={estilos.adicionar}
+              onPress={() => lidarComRemoverItem(item.id)}
+            >
+              <Text style={{ color: 'white' }}>REMOVER</Text>
+            </TouchableOpacity>
           </View>
         )}
         style={estilos.lista}
@@ -64,28 +56,6 @@ const estilos = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
     color: '#fff',
-  },
-  recipienteEntrada: {
-    flexDirection: 'row',
-    marginBottom: 8,
-  },
-  entrada: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#fff',
-    padding: 12,
-    marginRight: 8,
-    borderRadius: 6,
-    fontSize: 16,
-  },
-  botaoAdicionar: {
-    justifyContent: 'center',
-  },
-  erro: {
-    color: 'red',
-    marginBottom: 16,
-    fontSize: 14,
   },
   lista: {
     flex: 1,
@@ -111,5 +81,4 @@ const estilos = StyleSheet.create({
     padding: 13,
     borderRadius: 2
   }
-  
 });

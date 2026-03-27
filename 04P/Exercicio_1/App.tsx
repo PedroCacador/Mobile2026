@@ -1,6 +1,10 @@
-import React from 'react';
-import VisaoLista from './src/visoes/VisaoLista';
+import { NavigationContainer } from '@react-navigation/native';
+import { Navigator } from './src/Navigator';
 
 export default function App() {
-  return <VisaoLista />;
+  return (
+    <NavigationContainer>
+      <Navigator />
+    </NavigationContainer>
+  );
 }
